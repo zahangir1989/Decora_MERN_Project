@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
-
 import authRoutes from "./routes/auth.routes.js";
 import ApiError from "./utils/apiError.js";
 import errorHandler from "./middlewares/error.middleware.js";

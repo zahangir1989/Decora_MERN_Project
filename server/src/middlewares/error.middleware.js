@@ -29,8 +29,7 @@ const errorHandler = (err, req, res, next) => {
     );
     error = new ApiError(messages.join(", "), 400);
   }
-
-  /* ======================
+ /* ======================
      JWT ERRORS
   ====================== */
   if (error.name === "JsonWebTokenError") {

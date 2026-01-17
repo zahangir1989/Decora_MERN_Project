@@ -9,6 +9,7 @@ import ApiError from "../utils/apiError.js";
 export const registerUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
+    console.log(req.body)
 
     // 1️⃣ Basic validation
     if (!name || !email || !password) {
@@ -34,7 +35,10 @@ export const registerUser = async (req, res, next) => {
       message: "User registered successfully",
       data: user,
     });
+
+    // crete jwt token
   } catch (error) {
+    console.log(error)
     next(error);
   }
 };

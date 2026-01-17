@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import axios from "axios";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -18,13 +19,22 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
-      return;
+     console.log("password not match")
     }
-    console.log("Register Data:", formData);
+
+     const { data } = await axios.post(
+        "http://localhost:5000/api/v1/auth/register",
+        {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        }
+      );
+      console.log(data);
+      return;
   };
 
   return (
