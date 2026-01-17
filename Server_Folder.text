@@ -1,0 +1,67 @@
+ecommerce-backend/
+│
+├── src/
+│   ├── app.js                # Express app setup
+│   ├── server.js             # Server start (listen)
+│   │
+│   ├── config/
+│   │   ├── db.js             # MongoDB connection
+│   │   ├── env.js            # Environment variables
+│   │   └── jwt.js            # JWT config
+│   │
+│   ├── models/               # Mongoose models
+│   │   ├── User.model.js
+│   │   ├── Product.model.js
+│   │   ├── Category.model.js
+│   │   ├── Order.model.js
+│   │   └── Review.model.js
+│   │
+│   ├── controllers/          # Business logic
+│   │   ├── auth.controller.js
+│   │   ├── user.controller.js
+│   │   ├── product.controller.js
+│   │   ├── category.controller.js
+│   │   ├── order.controller.js
+│   │   └── review.controller.js
+│   │
+│   ├── routes/               # API routes
+│   │   ├── auth.routes.js
+│   │   ├── user.routes.js
+│   │   ├── product.routes.js
+│   │   ├── category.routes.js
+│   │   ├── order.routes.js
+│   │   └── review.routes.js
+│   │
+│   ├── middlewares/          # Custom middlewares
+│   │   ├── auth.middleware.js
+│   │   ├── role.middleware.js
+│   │   ├── error.middleware.js
+│   │   └── upload.middleware.js
+│   │
+│   ├── services/             # Complex logic (payment, email)
+│   │   ├── payment.service.js
+│   │   ├── email.service.js
+│   │   └── cloudinary.service.js
+│   │
+│   ├── utils/                # Helper functions
+│   │   ├── apiError.js
+│   │   ├── apiResponse.js
+│   │   ├── generateToken.js
+│   │   └── slugify.js
+│   │
+│   ├── validations/          # Request validation
+│   │   ├── auth.validation.js
+│   │   ├── product.validation.js
+│   │   └── order.validation.js
+│   │
+│   ├── seeds/                # Dummy data
+│   │   ├── product.seed.js
+│   │   └── admin.seed.js
+│   │
+│   └── uploads/              # Local uploads (optional)
+│
+├── .env
+├── .gitignore
+├── package.json
+├── README.md
+└── nodemon.json

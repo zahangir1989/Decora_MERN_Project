@@ -1,0 +1,74 @@
+src/
+│── assets/
+│   ├── images/
+│   ├── icons/
+│   └── styles/
+│       └── global.css
+│
+│── components/          # Reusable UI components
+│   ├── common/
+│   │   ├── Button.jsx
+│   │   ├── Input.jsx
+│   │   ├── Loader.jsx
+│   │   └── Modal.jsx
+│   │
+│   ├── layout/
+│   │   ├── Navbar.jsx
+│   │   ├── Footer.jsx
+│   │   └── Sidebar.jsx
+│   │
+│   └── product/
+│       ├── ProductCard.jsx
+│       ├── ProductList.jsx
+│       └── ProductFilter.jsx
+│
+│── pages/               # Route-based pages
+│   ├── Home.jsx
+│   ├── Shop.jsx
+│   ├── ProductDetails.jsx
+│   ├── Cart.jsx
+│   ├── Checkout.jsx
+│   ├── Login.jsx
+│   ├── Register.jsx
+│   └── NotFound.jsx
+│
+│── features/            # Feature-based logic (Redux / Zustand)
+│   ├── auth/
+│   │   ├── authSlice.js
+│   │   └── authApi.js
+│   │
+│   ├── cart/
+│   │   ├── cartSlice.js
+│   │   └── cartUtils.js
+│   │
+│   └── product/
+│       ├── productSlice.js
+│       └── productApi.js
+│
+│── hooks/
+│   ├── useAuth.js
+│   ├── useCart.js
+│   └── useFetch.js
+│
+│── services/            # API calls
+│   ├── api.js
+│   ├── authService.js
+│   ├── productService.js
+│   └── orderService.js
+│
+│── routes/
+│   ├── AppRoutes.jsx
+│   └── PrivateRoute.jsx
+│
+│── utils/
+│   ├── formatPrice.js
+│   ├── localStorage.js
+│   └── constants.js
+│
+│── context/             # Context API (if not Redux)
+│   ├── AuthContext.jsx
+│   └── CartContext.jsx
+│
+│── App.jsx
+│── main.jsx
+└── index.css
