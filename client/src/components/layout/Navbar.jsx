@@ -1,8 +1,13 @@
+import { useContext } from "react";
 import { useState } from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
+import { AuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) return null;
 
   const linkClass = ({ isActive }) =>
     isActive
@@ -29,16 +34,48 @@ const Navbar = () => {
             <NavLink to="/cart" className={linkClass}>
               Cart
             </NavLink>
-            <NavLink to="/login" className={linkClass}>
-              Login
-            </NavLink>
 
-            <NavLink
-              to="/register"
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-            >
-              Sign Up
-            </NavLink>
+            {!user ? (
+              <>
+                <NavLink to="/login" className={linkClass}>
+                  Login
+                </NavLink>
+
+                <NavLink
+                  to="/register"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+                >
+                  Sign Up
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <Link to={"/profile"} className="relative group cursor-pointer">
+                  {/* Avatar */}
+                  <img
+                    src={user.avatar || "https://i.pravatar.cc/40"}
+                    alt={user.name}
+                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                  />
+
+                  {/* Tooltip */}
+                  <div
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2
+        hidden group-hover:block
+        bg-gray-900 text-white text-sm px-3 py-1 rounded
+        whitespace-nowrap shadow-lg z-50"
+                  >
+                    {user.name}
+
+                    {/* Arrow */}
+                    <div
+                      className="absolute -top-1 left-1/2 -translate-x-1/2
+          w-2 h-2 bg-gray-900 rotate-45"
+                    ></div>
+                  </div>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -47,12 +84,32 @@ const Navbar = () => {
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             ) : (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             )}
           </button>
@@ -63,16 +120,32 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden bg-white shadow">
           <div className="px-4 py-3 space-y-3">
-            <NavLink onClick={() => setIsOpen(false)} to="/" className={linkClass}>
+            <NavLink
+              onClick={() => setIsOpen(false)}
+              to="/"
+              className={linkClass}
+            >
               Home
             </NavLink>
-            <NavLink onClick={() => setIsOpen(false)} to="/shop" className={linkClass}>
+            <NavLink
+              onClick={() => setIsOpen(false)}
+              to="/shop"
+              className={linkClass}
+            >
               Shop
             </NavLink>
-            <NavLink onClick={() => setIsOpen(false)} to="/cart" className={linkClass}>
+            <NavLink
+              onClick={() => setIsOpen(false)}
+              to="/cart"
+              className={linkClass}
+            >
               Cart
             </NavLink>
-            <NavLink onClick={() => setIsOpen(false)} to="/login" className={linkClass}>
+            <NavLink
+              onClick={() => setIsOpen(false)}
+              to="/login"
+              className={linkClass}
+            >
               Login
             </NavLink>
             <NavLink

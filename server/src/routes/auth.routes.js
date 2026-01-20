@@ -1,11 +1,14 @@
 import express from "express";
 import {
-//   registerUser,
-//   loginUser,
-//   getMe,
-registerUser
+  getMe,
+  loginUser,
+  logoutUser,
+  //   registerUser,
+  //   loginUser,
+  //   getMe,
+  registerUser,
 } from "../controllers/auth.controller.js";
-// import authMiddleware from "../middlewares/auth.middleware.js";
+import authMiddleware from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -21,13 +24,16 @@ router.post("/register", registerUser);
  * @desc    Login user
  * @access  Public
  */
-// router.post("/login", loginUser);
+router.post("/login", loginUser);
 
 /**
  * @route   GET /api/v1/auth/me
  * @desc    Get logged-in user profile
  * @access  Private
  */
-// router.get("/me", authMiddleware, getMe);
+
+router.post("/logout", authMiddleware, logoutUser);
+
+router.get("/me", authMiddleware, getMe);
 
 export default router;

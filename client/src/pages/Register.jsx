@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import toast from "react-hot-toast";
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +13,9 @@ const Register = () => {
     confirmPassword: "",
     agree: false,
   });
+
+  const { setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -22,19 +28,31 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-     console.log("password not match")
+      console.log("password not match");
     }
 
-     const { data } = await axios.post(
-        "http://localhost:5000/api/v1/auth/register",
-        {
-          name: formData.name,
-          email: formData.email,
-          password: formData.password
-        }
-      );
-      console.log(data);
-      return;
+    const { data } = await axios.post(
+      "http://localhost:5000/api/v1/auth/register",
+      {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      },
+      { withCredentials: true },
+    );
+    // ✅ Awesome Success Toast
+    toast.success("🎉 Registration successful! Welcome to Dacora", {
+      icon: "🚀",
+    });
+
+    if (data.success) {
+      setTimeout(() => {
+        setUser(data.user);
+        // ✅ redirect to home
+        navigate("/", { replace: true });
+      }, 800);
+    }
+    console.log(data);
   };
 
   return (

@@ -1,5 +1,9 @@
+import axios from "axios";
+import { useContext } from "react";
 import { useState } from "react";
-import { Link } from "react-router";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -7,12 +11,36 @@ const Login = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+    const { setUser } = useContext(AuthContext);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { data } = await axios.post(
+      "http://localhost:5000/api/v1/auth/login",
+      {
+        email: formData.email,
+        password: formData.password,
+      },
+      { withCredentials: true },
+    );
+    // ✅ Awesome Success Toast
+    toast.success("🎉 Login successful! Welcome to Dacora", {
+      icon: "🚀",
+    });
+
+    if (data.success) {
+      setTimeout(() => {
+        // ✅ redirect to home
+        setUser(data.user)
+        navigate("/", { replace: true });
+      }, 800);
+    }
+    console.log(data);
     console.log("Login Data:", formData);
   };
 
@@ -22,9 +50,7 @@ const Login = () => {
         {/* Header */}
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-gray-800">Welcome Back</h1>
-          <p className="text-gray-500 text-sm mt-2">
-            Login to your account
-          </p>
+          <p className="text-gray-500 text-sm mt-2">Login to your account</p>
         </div>
 
         {/* Form */}
@@ -115,7 +141,10 @@ const Login = () => {
         {/* Register */}
         <p className="text-center text-sm text-gray-600 mt-6">
           Don’t have an account?{" "}
-          <Link to="/register" className="text-blue-600 font-medium hover:underline">
+          <Link
+            to="/register"
+            className="text-blue-600 font-medium hover:underline"
+          >
             Sign up
           </Link>
         </p>
