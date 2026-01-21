@@ -1,27 +1,29 @@
-import React, { useState } from "react";
-const product = {
-  id: 1,
-  name: "Wireless Noise Cancelling Headphones",
-  price: 149.99,
-  rating: 4.6,
-  stock: "In Stock",
-  images: [
-    "https://images.pexels.com/photos/3394669/pexels-photo-3394669.jpeg?auto=compress&cs=tinysrgb&w=800",
-    "https://images.pexels.com/photos/3394659/pexels-photo-3394659.jpeg?auto=compress&cs=tinysrgb&w=800",
-    "https://images.pexels.com/photos/3394654/pexels-photo-3394654.jpeg?auto=compress&cs=tinysrgb&w=800",
-    "https://images.pexels.com/photos/3394660/pexels-photo-3394660.jpeg?auto=compress&cs=tinysrgb&w=800",
-    "https://images.pexels.com/photos/3394663/pexels-photo-3394663.jpeg?auto=compress&cs=tinysrgb&w=800",
-  ],
-  description:
-    "Experience premium sound quality with active noise cancellation. Designed for comfort, long battery life, and immersive audio performance for everyday use.",
-  features: [
-    "Active Noise Cancellation",
-    "40-hour Battery Life",
-    "Bluetooth 5.3",
-    "Fast Charging Support",
-    "Premium Build Quality",
-  ],
-};
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+// const product = {
+//   id: 1,
+//   name: "Wireless Noise Cancelling Headphones",
+//   price: 149.99,
+//   rating: 4.6,
+//   stock: "In Stock",
+//   images: [
+//     "https://images.pexels.com/photos/3394669/pexels-photo-3394669.jpeg?auto=compress&cs=tinysrgb&w=800",
+//     "https://images.pexels.com/photos/3394659/pexels-photo-3394659.jpeg?auto=compress&cs=tinysrgb&w=800",
+//     "https://images.pexels.com/photos/3394654/pexels-photo-3394654.jpeg?auto=compress&cs=tinysrgb&w=800",
+//     "https://images.pexels.com/photos/3394660/pexels-photo-3394660.jpeg?auto=compress&cs=tinysrgb&w=800",
+//     "https://images.pexels.com/photos/3394663/pexels-photo-3394663.jpeg?auto=compress&cs=tinysrgb&w=800",
+//   ],
+//   description:
+//     "Experience premium sound quality with active noise cancellation. Designed for comfort, long battery life, and immersive audio performance for everyday use.",
+//   features: [
+//     "Active Noise Cancellation",
+//     "40-hour Battery Life",
+//     "Bluetooth 5.3",
+//     "Fast Charging Support",
+//     "Premium Build Quality",
+//   ],
+// };
 
 const renderStars = (rating) => {
   const stars = [];
@@ -34,14 +36,57 @@ const renderStars = (rating) => {
         }
       >
         ★
-      </span>
+      </span>,
     );
   }
   return stars;
 };
 function ProductDetails() {
-  const [mainImage, setMainImage] = useState(product.images[0]);
   const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [mainImage, setMainImage] = useState([]);
+  // const [mainImage, setMainImage] = useState([]);
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/v1/products/single/${id}`,
+        );
+
+        // backend response handle
+        // setProduct(res.data.product || res.data);
+        if (res.data.success) {
+          setMainImage(res.data.product.images);
+          setProduct(res.data.product);
+        }
+
+        console.log(res.data.product.images);
+      } catch (err) {
+        console.log(err);
+        setError("Failed to load products");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[60vh]">
+        <p className="text-lg font-semibold">Loading products...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500 mt-10">{error}</div>;
+  }
   return (
     <section className="py-12 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,21 +95,27 @@ function ProductDetails() {
           <div>
             <img
               src={mainImage}
-              alt={product.name}
+              alt={product.title}
               className="w-full h-96 object-cover rounded-lg shadow"
             />
             <div className="flex gap-3 mt-4">
-              {product.images.map((img, index) => (
-                <img
-                  key={index}
-                  src={img}
-                  alt="thumbnail"
-                  onClick={() => setMainImage(img)}
-                  className={`w-20 h-20 object-cover rounded-md cursor-pointer border-2 ${
-                    mainImage === img ? "border-blue-600" : "border-transparent"
-                  }`}
-                />
-              ))}
+              {product.images && (
+                <>
+                  {product.images.map((img, index) => (
+                    <img
+                      key={index}
+                      src={img}
+                      alt="thumbnail"
+                      onClick={() => setMainImage(img)}
+                      className={`w-20 h-20 object-cover rounded-md cursor-pointer border-2 ${
+                        mainImage === img
+                          ? "border-blue-600"
+                          : "border-transparent"
+                      }`}
+                    />
+                  ))}
+                </>
+              )}
             </div>
           </div>
 
@@ -131,9 +182,9 @@ function ProductDetails() {
             <div className="mt-6">
               <h3 className="text-lg font-semibold mb-2">Key Features</h3>
               <ul className="list-disc list-inside text-gray-700 space-y-1">
-                {product.features.map((feature, index) => (
+                {/* {product.features.map((feature, index) => (
                   <li key={index}>{feature}</li>
-                ))}
+                ))} */}
               </ul>
             </div>
           </div>

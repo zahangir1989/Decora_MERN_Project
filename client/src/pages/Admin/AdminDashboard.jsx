@@ -1,9 +1,47 @@
 import { Link } from "react-router";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
 
 const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
+
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/v1/products/all",
+        );
+
+        // backend response handle
+        setProducts(res.data.products || res.data);
+        console.log(res.data.products);
+      } catch (err) {
+        console.log(err);
+        setError("Failed to load products");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[60vh]">
+        <p className="text-lg font-semibold">Loading products...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500 mt-10">{error}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -63,13 +101,10 @@ const AdminDashboard = () => {
 
           {/* Recent Products Preview */}
           <ul className="space-y-3 text-sm">
-            {["Laptop", "Phone", "Headphone", "Watch"].map((p, i) => (
-              <li
-                key={i}
-                className="flex justify-between border-b pb-2"
-              >
-                <span>{p}</span>
-                <span className="text-gray-500">$ {200 + i * 50}</span>
+            {products.map((p) => (
+              <li key={p._id} className="flex justify-between border-b pb-2">
+                <span>{p.title}</span>
+                <span className="text-gray-500">$ {p.price}</span>
               </li>
             ))}
           </ul>

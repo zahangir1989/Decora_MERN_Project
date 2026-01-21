@@ -15,6 +15,7 @@ import AdminDashboard from "../pages/Admin/AdminDashboard";
 import Products from "../pages/Admin/Products";
 import CreateProduct from "../pages/Admin/CreateProduct";
 import EditProduct from "../pages/Admin/EditProduct";
+import Shop from "../pages/Shop";
 
 function AppRoutes() {
   return (
@@ -35,6 +36,7 @@ function AppRoutes() {
           {/* protected End */}
           <Route path="cart" element={<Cart />} />
           <Route path="product/:id" element={<ProductDetails />} />
+          <Route path="/shop" element={<Shop />} />
           {/* Admin Route */}
           <Route element={<AdminRoute />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />

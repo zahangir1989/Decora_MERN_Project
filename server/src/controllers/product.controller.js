@@ -10,6 +10,7 @@ export const createProduct = async (req, res, next) => {
   try {
     const { title, description, price, stock, images, category } = req.body;
 
+    console.log(req.body)
     const product = await Product.create({
       title,
       description,

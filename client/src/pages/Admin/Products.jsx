@@ -1,11 +1,67 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router";
 
 const Products = () => {
   // dummy data (replace with API later)
-  const products = [
-    { id: 1, name: "Laptop", price: 1200, stock: 10 },
-    { id: 2, name: "Phone", price: 800, stock: 0 },
-  ];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/v1/products/all",
+        );
+
+        // backend response handle
+        setProducts(res.data.products || res.data);
+        console.log(res.data.products);
+      } catch (err) {
+        console.log(err);
+        setError("Failed to load products");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const deletedProduct = async (id) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/api/v1/products/deleted/${id}`,
+        { withCredentials: true },
+      );
+      if (res.data.success) {
+        toast.success("🎉 Product Deleted successful!");
+        // ✅ REMOVE PRODUCT FROM UI
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product._id !== id),
+        );
+      }
+      console.log(res);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[60vh]">
+        <p className="text-lg font-semibold">Loading products...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500 mt-10">{error}</div>;
+  }
 
   return (
     <div className="p-6">
@@ -31,8 +87,8 @@ const Products = () => {
           </thead>
           <tbody>
             {products.map((p) => (
-              <tr key={p.id} className="border-t">
-                <td className="p-3">{p.name}</td>
+              <tr key={p._id} className="border-t">
+                <td className="p-3">{p.title}</td>
                 <td className="p-3 text-center">${p.price}</td>
                 <td className="p-3 text-center">
                   <span
@@ -47,12 +103,17 @@ const Products = () => {
                 </td>
                 <td className="p-3 text-center space-x-2">
                   <Link
-                    to={`/admin/products/edit/${p.id}`}
+                    to={`/admin/products/edit/${p._id}`}
                     className="text-blue-600"
                   >
                     Edit
                   </Link>
-                  <button className="text-red-600">Delete</button>
+                  <button
+                    onClick={() => deletedProduct(p._id)}
+                    className="text-red-600"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
