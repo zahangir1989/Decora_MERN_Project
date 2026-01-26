@@ -3,30 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { addToCartApi } from "../api/cart.api";
 import toast from "react-hot-toast";
-// const product = {
-//   id: 1,
-//   name: "Wireless Noise Cancelling Headphones",
-//   price: 149.99,
-//   rating: 4.6,
-//   stock: "In Stock",
-//   images: [
-//     "https://images.pexels.com/photos/3394669/pexels-photo-3394669.jpeg?auto=compress&cs=tinysrgb&w=800",
-//     "https://images.pexels.com/photos/3394659/pexels-photo-3394659.jpeg?auto=compress&cs=tinysrgb&w=800",
-//     "https://images.pexels.com/photos/3394654/pexels-photo-3394654.jpeg?auto=compress&cs=tinysrgb&w=800",
-//     "https://images.pexels.com/photos/3394660/pexels-photo-3394660.jpeg?auto=compress&cs=tinysrgb&w=800",
-//     "https://images.pexels.com/photos/3394663/pexels-photo-3394663.jpeg?auto=compress&cs=tinysrgb&w=800",
-//   ],
-//   description:
-//     "Experience premium sound quality with active noise cancellation. Designed for comfort, long battery life, and immersive audio performance for everyday use.",
-//   features: [
-//     "Active Noise Cancellation",
-//     "40-hour Battery Life",
-//     "Bluetooth 5.3",
-//     "Fast Charging Support",
-//     "Premium Build Quality",
-//   ],
-// };
-
 const renderStars = (rating) => {
   const stars = [];
   for (let i = 1; i <= 5; i++) {
