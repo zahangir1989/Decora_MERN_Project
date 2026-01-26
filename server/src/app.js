@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.routes.js";
 import ApiError from "./utils/apiError.js";
 import errorHandler from "./middlewares/error.middleware.js";
 import productRoutes from "./routes/product.routes.js";
+import cartRoutes from "./routes/cart.routes.js";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(cookieParser());
 ====================== */
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/products", productRoutes);
+app.use("/api/v1/cart", cartRoutes);
 
 /* ======================
    HEALTH CHECK

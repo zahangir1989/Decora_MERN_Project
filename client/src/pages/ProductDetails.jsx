@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { addToCartApi } from "../api/cart.api";
+import toast from "react-hot-toast";
 // const product = {
 //   id: 1,
 //   name: "Wireless Noise Cancelling Headphones",
@@ -75,6 +77,16 @@ function ProductDetails() {
 
     fetchProducts();
   }, [id]);
+
+  // Add to cart function
+  const handleAddToCart = async (productId) => {
+    try {
+      const res = await addToCartApi(productId, quantity);
+      toast.success(res.message || "Added to cart ✅");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Add to cart failed ❌");
+    }
+  };
 
   if (loading) {
     return (
@@ -162,7 +174,11 @@ function ProductDetails() {
 
             {/* Buttons */}
             <div className="flex gap-4 mt-6">
-              <button className="bg-blue-600 text-white px-8 py-3 rounded-md font-semibold hover:bg-blue-700 transition">
+              <button
+                onClick={() => handleAddToCart(product._id)}
+                disabled={product.stock === 0}
+                className="bg-blue-600 text-white px-8 py-3 rounded-md font-semibold hover:bg-blue-700 transition"
+              >
                 Add to Cart
               </button>
               <button className="border border-gray-300 px-8 py-3 rounded-md font-semibold hover:bg-gray-100 transition">
